@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -8,58 +8,59 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Usuario(Base):
-    __tablename__ = 'usuario'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class User(Base):
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     last_name = Column(String(250))
     email = Column(String(250), nullable=False)
     password = Column(String(250))
     
-    
-
-class PersonajeFav(Base):
-    __tablename__ = 'personajefav'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+class FavoriteCharacter(Base):
+    __tablename__ = 'favoritecharacter'
     id = Column(Integer, primary_key=True)
-    personaje_name = Column(String(250))
-    usuario_id = Column(Integer, ForeignKey('usuario.id'))
-    usuario = relationship(Usuario)
+    User_id = Column(Integer, ForeignKey('user.id'))
+    Character_id = Column(Integer, ForeignKey('characters.id'))
+    Add_date = Column(DateTime)
+    Characters_relation = relationship('characters')
+    User_relation = relationship('user')
 
-class PlanetaFav(Base):
-    __tablename__ = 'planetafav'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+   
+class FavoritePlanet(Base):
+    __tablename__ = 'favoriteplanet'
     id = Column(Integer, primary_key=True)
-    planeta_name = Column(String(250))
-    usuario_id = Column(Integer, ForeignKey('usuario.id'))
-    usuario = relationship(Usuario)
+    User_id = Column(Integer, ForeignKey('user.id'))
+    Planets_id = Column(Integer, ForeignKey('planets.id'))
+    Add_date = Column(DateTime)
+    Planets_relation = relationship('planets')
+    User_relation = relationship('user')
 
 
-class Personajes(Base):
-    __tablename__ = 'personajes'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    personaje_name = Column(String(250))
-    
-    personaje_descripcion = Column(String(250))
-    personajefav_id = Column(Integer, ForeignKey('personajefav.id'))
-    personajefav = relationship(PersonajeFav)
+class Characters(Base):    
+    __tablename__ = 'characters'
+    id = Column(Integer, primary_key=True) 
+    Name = Column(String(20), nullable=False)
+    Age = Column(Integer, nullable=False)
+    Birth_year = Column(Integer, nullable=False)
+    Height = Column(Integer, nullable=False)
+    Mass = Column(String(20), nullable=False)
+    Hair_color = Column(String(10), nullable=False)
+    Skin_color = Column(String(10), nullable=False)
+    Eye_color = Column(String(10), nullable=False)
+    Gender = Column(String(10), nullable=False)
 
-class Planetas(Base):
-    __tablename__ = 'planetas'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    planeta_name = Column(String(250))
-    planeta_localidad = Column(String(250))
-    planeta_descripcion = Column(String(250))
-    planetafav_id = Column(Integer, ForeignKey('planetafav.id'))
-    planetafav = relationship(PlanetaFav)
+class Planets(Base):    
+    __tablename__ = 'planets'
+    id = Column(Integer, primary_key=True) 
+    Name = Column(String(50), nullable=False)
+    Diameter = Column(Integer, nullable=False)
+    Rotation_period = Column(Integer, nullable=False)
+    Orbital_period = Column(Integer, nullable=False)
+    Gravity = Column(String(20), nullable=False)
+    Population = Column(Integer, nullable=False)
+    Climate = Column(String(20), nullable=False)
+    Terrain = Column(String(20), nullable=False)
+    Surface_water = Column(Integer, nullable=False)
 
 
 ## Draw from SQLAlchemy base
